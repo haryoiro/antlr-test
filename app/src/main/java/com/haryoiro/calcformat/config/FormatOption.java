@@ -2,16 +2,21 @@ package com.haryoiro.calcformat.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.haryoiro.calcformat.config.impl.TomlFormatOptionReader;
-import lombok.Data;
 
 import java.io.File;
 
-@Data
 public class FormatOption {
 
     private Option option = new Option();
 
-    @Data
+    public Option getOption() {
+        return this.option;
+    }
+
+    public void setOption(Option option) {
+        this.option = option;
+    }
+
     public static class Option {
 
         // タブをスペースにするか
@@ -28,6 +33,54 @@ public class FormatOption {
 
         // 演算子の前後にスペースを入れるかどうか
         private boolean spaceAroundOperator = true;
+
+        public boolean isTabToSpace() {
+            return this.tabToSpace;
+        }
+
+        public int getTabWidth() {
+            return this.tabWidth;
+        }
+
+        public boolean isAddParenthesis() {
+            return this.addParenthesis;
+        }
+
+        public boolean isSpaceAroundParenthesis() {
+            return this.spaceAroundParenthesis;
+        }
+
+        public boolean isNewLineAfterParenthesis() {
+            return this.newLineAfterParenthesis;
+        }
+
+        public boolean isSpaceAroundOperator() {
+            return this.spaceAroundOperator;
+        }
+
+        public void setTabToSpace(boolean tabToSpace) {
+            this.tabToSpace = tabToSpace;
+        }
+
+        public void setTabWidth(int tabWidth) {
+            this.tabWidth = tabWidth;
+        }
+
+        public void setAddParenthesis(boolean addParenthesis) {
+            this.addParenthesis = addParenthesis;
+        }
+
+        public void setSpaceAroundParenthesis(boolean spaceAroundParenthesis) {
+            this.spaceAroundParenthesis = spaceAroundParenthesis;
+        }
+
+        public void setNewLineAfterParenthesis(boolean newLineAfterParenthesis) {
+            this.newLineAfterParenthesis = newLineAfterParenthesis;
+        }
+
+        public void setSpaceAroundOperator(boolean spaceAroundOperator) {
+            this.spaceAroundOperator = spaceAroundOperator;
+        }
     }
 
     // Fileより読み込む

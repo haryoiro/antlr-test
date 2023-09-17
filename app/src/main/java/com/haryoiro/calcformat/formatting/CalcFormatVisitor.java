@@ -2,10 +2,8 @@ package com.haryoiro.calcformat.formatting;
 
 import com.haryoiro.calcformat.antlr.CalcBaseVisitor;
 import com.haryoiro.calcformat.antlr.CalcParser;
-import com.haryoiro.calcformat.antlr.CalcParser.ExprContext;
 import com.haryoiro.calcformat.config.FormatOption;
 import com.haryoiro.calcformat.config.FormatOption.Option;
-import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.logging.log4j.LogManager;
@@ -14,13 +12,16 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.function.Function;
 
-@RequiredArgsConstructor
 public class CalcFormatVisitor extends CalcBaseVisitor<String> {
 
     private final FormatOption option;
     private final Logger logger = LogManager.getLogger("debug");
 
     private int indentLevel = 0;
+
+    public CalcFormatVisitor(FormatOption option) {
+        this.option = option;
+    }
 
     private String indent() {
         if (getOption().isTabToSpace()) {

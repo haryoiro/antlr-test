@@ -30,11 +30,6 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.24.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    compileOnly("org.jetbrains:annotations:24.0.1")
-
-    compileOnly("org.projectlombok:lombok:1.18.28")
-    annotationProcessor("org.projectlombok:lombok:1.18.28")
-
     // guava
     implementation("com.google.guava:guava:32.1.1-jre")
 
@@ -62,14 +57,27 @@ java {
 }
 
 application {
-    // Define the main class for the application.
     mainClass.set("com.haryoiro.calcformat.app.App")
-    mainModule.set("com.haryoiro.calcformat.app")
+    mainModule.set("com.haryoiro.calcformat")
 }
 
 tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+jlink {
+
+    options = listOf(
+            "--strip-debug", "--compress", "2",
+            "--no-header-files",
+            "--no-man-pages",
+
+            )
+    launcher {
+        name = "calcformat"
+    }
+
+    forceMerge("jackson", "log4j", "lombok")
 }
 
 tasks {
