@@ -1,10 +1,10 @@
-[formatOption]
+[option]
 # 括弧をつけるかどうか
 addParenthesis = false
 
 # 括弧の前後にスペースを入れるかどうか
 # addParenthesisがfalseの場合は無視される
-spaceAroundParenthesis = true
+spaceAroundParenthesis = false
 
 # 括弧の後に改行を入れるかどうか
 # addParenthesisがfalseの場合は無視される
