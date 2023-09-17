@@ -3,42 +3,59 @@
  */
 package com.haryoiro.calcformat.app;
 
-import com.haryoiro.calcformat.cli.CliOptions;
 import com.haryoiro.calcformat.config.FormatOption;
 import com.haryoiro.calcformat.formatting.CalcFormatter;
-import com.haryoiro.calcformat.cli.CliOptionParser;
-import com.haryoiro.calcformat.utils.LoggerUtils;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
+
+import java.util.List;
 
 import static com.haryoiro.calcformat.utils.IoUtils.pathToFile;
-import static java.lang.System.exit;
 
-public class App {
+@Command(name = "calcformat", mixinStandardHelpOptions = true, version = "calcformat 1.0",
+        description = "calc format tool")
+public class App implements Runnable {
 
-    static FormatOption formatOption = new FormatOption();
+    // フォーマットするファイル名をカンマ区切りで指定
+    @Parameters(index = "0..*", description = "input files")
+    private List<String> inputFiles;
+
+
+    // フォーマットを実行する
+    @Option(names = {"-f", "--fix"}, description = "fix input files")
+    private boolean fix = false;
+
+    // フォーマットを実行せずに、dry-runする
+    @Option(names = {"-d", "--dry"}, description = "check input files")
+    private boolean check = false;
+
+    // オプションファイルを指定する
+    @Option(names = {"-o", "--option"}, description = "option file")
+    private String optionFile;
 
     public static void main(String[] args) {
+        int exitCode = new picocli.CommandLine(new App()).execute(args);
+        System.exit(exitCode);
+    }
 
-        CliOptionParser parser = new CliOptionParser(args);
-        CliOptions opt = parser.parse();
-        if (opt == null) {
-            CliOptionParser.printHelp();
-            exit(0);
+    @Override
+    public void run() {
+        // デフォルトのフォーマットオプションを設定
+        FormatOption formatOption = new FormatOption();
+
+        // オプションファイルが指定されている場合は、オプションファイルを読み込む
+        if (optionFile != null) {
+            formatOption = formatOption.fromPath(optionFile);
         }
-
-        // オプションファイルが指定されていれば、フォーマットオプションを読み込む
-        if (opt.getOptionFile() != null) {
-            formatOption = formatOption.fromPath(opt.getOptionFile());
-        }
-
 
         // 指定されたすべてのファイルに対してフォーマットをかける
-        if (opt.getInputFiles() != null) {
-            for (String file : opt.getInputFiles()) {
+        if (inputFiles != null) {
+            for (String file : inputFiles) {
                 var res = CalcFormatter.format(pathToFile(file), formatOption);
                 System.out.println(res);
             }
         }
 
     }
-
 }

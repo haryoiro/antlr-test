@@ -42,7 +42,8 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.15.2")
 
     // cli args
-    implementation("commons-cli:commons-cli:1.5.0")
+    implementation("info.picocli:picocli:4.7.5")
+    annotationProcessor("info.picocli:picocli-codegen:4.7.5")
 
     // antlr
     antlr("org.antlr:antlr4:4.13.1")
