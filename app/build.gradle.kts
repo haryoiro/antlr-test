@@ -31,6 +31,9 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.15.2")
 
+    // cli args
+    implementation("commons-cli:commons-cli:1.5.0")
+
     // antlr
     antlr("org.antlr:antlr4:4.13.1")
 }
