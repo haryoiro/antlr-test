@@ -1,7 +1,7 @@
 grammar Calc;
 
 @header {
-package calcparser.antlr;
+package com.haryoiro.calcformat.antlr;
 }
 
 
