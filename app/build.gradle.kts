@@ -17,12 +17,21 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
+}
+
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     compileOnly("org.jetbrains:annotations:24.0.1")
+
+    compileOnly("org.projectlombok:lombok:1.18.28")
+    annotationProcessor("org.projectlombok:lombok:1.18.28")
 
     // guava
     implementation("com.google.guava:guava:32.1.1-jre")
