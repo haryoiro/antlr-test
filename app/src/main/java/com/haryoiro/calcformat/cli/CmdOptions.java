@@ -86,7 +86,6 @@ public class CmdOptions {
 
         String[] remainingArgs = cmd.getArgs();
         if (remainingArgs.length > 0) {
-            System.out.println("Files specified without options: ");
             attributes.setInputFiles(List.of(remainingArgs));
         }
 
