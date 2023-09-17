@@ -3,6 +3,7 @@ package com.haryoiro.calcformat.formatting;
 import com.haryoiro.calcformat.antlr.CalcBaseVisitor;
 import com.haryoiro.calcformat.antlr.CalcParser;
 import com.haryoiro.calcformat.config.FormatOption;
+import com.haryoiro.calcformat.config.FormatOption.Option;
 import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -39,12 +40,12 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
 
     @Override
     public String visitAdd_expr(CalcParser.Add_exprContext ctx) {
-        return "(" + joinExpressions(ctx.mul_expr(), ctx.PLUS_MINUS(), this::visit) + ")";
+        return wrapParentheses(joinExpressions(ctx.mul_expr(), ctx.PLUS_MINUS(), this::visit));
     }
 
     @Override
     public String visitMul_expr(CalcParser.Mul_exprContext ctx) {
-        return "(" + joinExpressions(ctx.atom(), ctx.MUL_DIV(), this::visit) + ")";
+        return wrapParentheses(joinExpressions(ctx.atom(), ctx.MUL_DIV(), this::visit));
     }
 
 
@@ -61,4 +62,16 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
         }
         throw new RuntimeException("Unknown atom: " + ctx.getText());
     }
+
+    private Option getOption() {
+        return option.getOption();
+    }
+
+    private String wrapParentheses(String expr) {
+        if (getOption().isAddParenthesis()) {
+            return "(" + expr + ")";
+        }
+        return expr;
+    }
+
 }
