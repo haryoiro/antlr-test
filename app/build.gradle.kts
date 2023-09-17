@@ -57,7 +57,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.haryoiro.app.App")
+    mainClass.set("com.haryoiro.calcformat.app.App")
 }
 
 tasks.named<Test>("test") {
@@ -67,7 +67,7 @@ tasks.named<Test>("test") {
 
 
 tasks.generateGrammarSource {
-    outputDirectory = file("src/main/java/com/haryoiro/antlr")
+    outputDirectory = file("src/main/java/com/haryoiro/calcformat/antlr")
     maxHeapSize = "64m"
     arguments = arguments + listOf("-visitor", "-long-messages")
 }
