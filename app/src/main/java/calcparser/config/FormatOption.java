@@ -1,5 +1,9 @@
 package calcparser.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.File;
+
 public class FormatOption {
 
     // 括弧をつけるかどうか
@@ -15,4 +19,17 @@ public class FormatOption {
 
     // 演算子の前後にスペースを入れるかどうか
     private boolean spaceAroundOperator = false;
+
+
+    // Fileより読み込む
+    @JsonIgnore
+    public FormatOption fromFile(File file) {
+        return new TomlFormatOptionReader().fromFile(file);
+    }
+
+    // パスより読み込む
+    @JsonIgnore
+    public FormatOption fromPath(String path) {
+        return new TomlFormatOptionReader().fromFile(new File(path));
+    }
 }
