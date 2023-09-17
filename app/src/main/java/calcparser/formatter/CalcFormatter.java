@@ -1,15 +1,14 @@
-package calcparser;
+package calcparser.formatter;
 
 import calcparser.antlr.CalcBaseVisitor;
 import calcparser.antlr.CalcParser;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
 import java.util.function.Function;
 
-public class CalcFormatterVisitor extends CalcBaseVisitor<String> {
+public class CalcFormatter extends CalcBaseVisitor<String> {
 
     private String joinExpressions(List<? extends ParserRuleContext> expressions,
             List<? extends TerminalNode> operators,

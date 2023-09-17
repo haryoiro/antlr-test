@@ -5,9 +5,9 @@ package calcparser;
 
 import calcparser.antlr.CalcLexer;
 import calcparser.antlr.CalcParser;
+import calcparser.formatter.CalcFormatter;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import static java.lang.System.exit;
 
@@ -35,7 +35,7 @@ public class App {
         CalcParser.StartContext tree = parser.start();
 
         // Visitorを作成し、構文木を走査
-        CalcFormatterVisitor formatter = new CalcFormatterVisitor();
+        CalcFormatter formatter = new CalcFormatter();
         String formattedCode = formatter.visit(tree);
 
         System.out.println(formattedCode);
