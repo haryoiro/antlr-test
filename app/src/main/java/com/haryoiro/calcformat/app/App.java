@@ -3,10 +3,10 @@
  */
 package com.haryoiro.calcformat.app;
 
+import com.haryoiro.calcformat.cli.CliOptions;
 import com.haryoiro.calcformat.config.FormatOption;
 import com.haryoiro.calcformat.formatting.CalcFormatter;
-import com.haryoiro.calcformat.cli.CmdAttributes;
-import com.haryoiro.calcformat.cli.CmdOptions;
+import com.haryoiro.calcformat.cli.CliOptionParser;
 import static com.haryoiro.calcformat.utils.IoUtils.pathToFile;
 import static java.lang.System.exit;
 
@@ -16,19 +16,14 @@ public class App {
 
     public static void main(String[] args) {
 
-        CmdAttributes opt = CmdOptions.parseArgs(args);
+        CliOptionParser parser = new CliOptionParser(args);
+        CliOptions opt = parser.parse();
         if (opt == null) {
-            CmdOptions.printHelp();
+            CliOptionParser.printHelp();
             exit(0);
         }
 
-
-        if (opt.isFix()) {
-            System.out.println("fix");
-        }
-        if (opt.isCheck()) {
-            System.out.println("check");
-        }
+        // オプションファイルが指定されていれば、フォーマットオプションを読み込む
         if (opt.getOptionFile() != null) {
             formatOption = formatOption.fromPath(opt.getOptionFile());
         }

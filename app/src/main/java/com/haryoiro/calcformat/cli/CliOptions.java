@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class CmdAttributes {
+public class CliOptions {
 
     // フォーマットするファイル名をカンマ区切りで指定
     private List<String> inputFiles;
