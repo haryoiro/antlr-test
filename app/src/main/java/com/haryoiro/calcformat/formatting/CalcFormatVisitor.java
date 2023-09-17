@@ -58,7 +58,7 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
             return ctx.IDENTIFIER().getText();
         }
         if (ctx.expr() != null) {
-            return "(" + visit(ctx.expr()) + ")";
+            return wrapParentheses(visit(ctx.expr()));
         }
         throw new RuntimeException("Unknown atom: " + ctx.getText());
     }
@@ -68,8 +68,13 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
     }
 
     private String wrapParentheses(String expr) {
+        StringBuilder sb = new StringBuilder();
+
         if (getOption().isAddParenthesis()) {
-            return "(" + expr + ")";
+            sb.append("(");
+            sb.append(expr);
+            sb.append(")");
+            return sb.toString();
         }
         return expr;
     }
