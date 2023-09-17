@@ -7,7 +7,4 @@ public interface FormatOptionReader {
 
     FormatOption fromString(String string);
 
-    default FormatOption getDefault() {
-        return new FormatOption();
-    };
 }
