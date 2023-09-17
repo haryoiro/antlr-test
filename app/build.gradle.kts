@@ -10,6 +10,7 @@ plugins {
     application
     antlr
     java
+    id("org.beryx.jlink") version "2.26.0"
 }
 
 repositories {
