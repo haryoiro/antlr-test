@@ -3,42 +3,43 @@
  */
 package calcparser;
 
-import calcparser.antlr.CalcLexer;
-import calcparser.antlr.CalcParser;
+import calcparser.config.FormatOption;
 import calcparser.formatter.CalcFormatter;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-
+import calcparser.optoins.CmdAttributes;
+import calcparser.optoins.CmdOptions;
+import static calcparser.utils.IoUtils.pathToFile;
 import static java.lang.System.exit;
 
 public class App {
 
-    private static String usage = """
-            hogr
-            """;
+    static FormatOption formatOption = new FormatOption();
 
     public static void main(String[] args) {
 
-        if (args.length < 1) {
-            System.out.println(usage);
+        CmdAttributes opt = CmdOptions.parseArgs(args);
+        if (opt == null) {
+            CmdOptions.printHelp();
             exit(0);
         }
 
-        String targetString = args[0];
 
-        var stream = CharStreams.fromString(targetString);
-        var lexer = new CalcLexer(stream);
-        var tokens = new CommonTokenStream(lexer);
-        var parser = new CalcParser(tokens);
+        if (opt.isFix()) {
+            System.out.println("fix");
+        }
+        if (opt.isCheck()) {
+            System.out.println("check");
+        }
+        if (opt.getOptionFile() != null) {
+            formatOption = formatOption.fromPath(opt.getOptionFile());
+        }
 
-        // パースを行い、ParseTree（構文木）を取得
-        CalcParser.StartContext tree = parser.start();
-
-        // Visitorを作成し、構文木を走査
-        CalcFormatter formatter = new CalcFormatter();
-        String formattedCode = formatter.visit(tree);
-
-        System.out.println(formattedCode);
+        // 指定されたすべてのファイルに対してフォーマットをかける
+        if (opt.getInputFiles() != null) {
+            for (String file : opt.getInputFiles()) {
+                System.out.println(CalcFormatter.format(pathToFile(file), formatOption));
+            }
+        }
 
     }
+
 }
