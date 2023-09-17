@@ -9,7 +9,7 @@ import java.io.File;
 @Data
 public class FormatOption {
 
-    private Option option;
+    private Option option = new Option();
 
     @Data
     public static class Option {
