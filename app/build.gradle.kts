@@ -63,6 +63,7 @@ java {
 application {
     // Define the main class for the application.
     mainClass.set("com.haryoiro.calcformat.app.App")
+    mainModule.set("com.haryoiro.calcformat.app")
 }
 
 tasks.named<Test>("test") {
