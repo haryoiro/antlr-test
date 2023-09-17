@@ -1,4 +1,4 @@
-package com.haryoiro.cli;
+package com.haryoiro.calcformat.cli;
 
 import lombok.Getter;
 import org.apache.commons.cli.CommandLine;

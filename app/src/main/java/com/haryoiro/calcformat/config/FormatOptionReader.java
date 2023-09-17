@@ -1,4 +1,4 @@
-package com.haryoiro.config;
+package com.haryoiro.calcformat.config;
 
 import java.io.File;
 

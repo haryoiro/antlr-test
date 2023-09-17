@@ -1,4 +1,4 @@
-package com.haryoiro.cli;
+package com.haryoiro.calcformat.cli;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

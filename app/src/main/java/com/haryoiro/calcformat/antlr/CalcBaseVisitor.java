@@ -1,6 +1,6 @@
 // Generated from Calc.g4 by ANTLR 4.13.1
 
-package com.haryoiro.antlr;
+package com.haryoiro.calcformat.antlr;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

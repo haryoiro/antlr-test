@@ -1,7 +1,7 @@
-package com.haryoiro.config;
+package com.haryoiro.calcformat.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.haryoiro.config.impl.TomlFormatOptionReader;
+import com.haryoiro.calcformat.config.impl.TomlFormatOptionReader;
 import lombok.Data;
 
 import java.io.File;
