@@ -2,6 +2,7 @@ package com.haryoiro.calcformat.formatting;
 
 import com.haryoiro.calcformat.antlr.CalcBaseVisitor;
 import com.haryoiro.calcformat.antlr.CalcParser;
+import com.haryoiro.calcformat.antlr.CalcParser.ExprContext;
 import com.haryoiro.calcformat.config.FormatOption;
 import com.haryoiro.calcformat.config.FormatOption.Option;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.function.Function;
-
 
 @RequiredArgsConstructor
 public class CalcFormatVisitor extends CalcBaseVisitor<String> {
@@ -30,15 +30,15 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
         }
     }
 
-    private String joinExpressions(
-            ParserRuleContext ctx,
-            List<? extends ParserRuleContext> expressions,
-            List<? extends TerminalNode> operators,
+    private String joinExpressions(ParserRuleContext ctx,
+            List<? extends ParserRuleContext> expressions, List<? extends TerminalNode> operators,
             Function<ParserRuleContext, String> visitorMethod) {
 
         StringBuilder sb = new StringBuilder();
 
-        boolean addParenthesis = option.getOption().isAddParenthesis() && !(ctx instanceof CalcParser.Add_exprContext);
+        boolean addParenthesis = (option.getOption().isAddParenthesis()
+                && !(ctx instanceof CalcParser.ExprContext)
+                && !(ctx instanceof CalcParser.Add_exprContext) && !ctx.getText().startsWith("("));
 
         if (addParenthesis) {
             applyGlobalFormatOptions(sb, true);
@@ -47,9 +47,11 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
         sb.append(visitorMethod.apply(expressions.get(0)));
 
         for (int i = 1; i < expressions.size(); i++) {
-            // Option: オペレータの前後に空白を追加する
-            if (getOption().isSpaceAroundOperator()) sb.append(addSpaceToBoth(operators.get(i - 1).getText()));
-            else sb.append(operators.get(i - 1).getText());
+            if (getOption().isSpaceAroundOperator()) {
+                sb.append(addSpaceToBoth(operators.get(i - 1).getText()));
+            } else {
+                sb.append(operators.get(i - 1).getText());
+            }
 
             sb.append(visitorMethod.apply(expressions.get(i)));
         }
@@ -63,15 +65,7 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
 
     @Override
     public String visitStart(CalcParser.StartContext ctx) {
-        StringBuilder sb = new StringBuilder();
-
-        applyGlobalFormatOptions(sb, true);
-
-        sb.append(visit(ctx.expr()));
-
-        applyGlobalFormatOptions(sb, false);
-
-        return sb.toString();
+        return visit(ctx.expr());
     }
 
     @Override
@@ -100,15 +94,11 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
             sb.append(ctx.IDENTIFIER().getText());
         }
         if (ctx.expr() != null) {
-            indentLevel++;
-            String result = "\n" + "(\n" + visit(ctx.expr()) + "\n" + indent() + ")";
-            sb.append(result);
-            indentLevel--;
+            sb.append(visit(ctx.expr()));
         }
 
         return sb.toString();
     }
-
 
     // オプションをえる
     private Option getOption() {
@@ -117,6 +107,7 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
 
     /**
      * オプションに従い括弧や改行、スペースを追加する
+     *
      * @param sb
      * @param isStart
      */
@@ -136,7 +127,7 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
             } else {
                 if (option.isNewLineAfterParenthesis()) {
                     indentLevel--;
-                    sb.append("\n" + indent() + ")");
+                    sb.append("\n").append(indent()).append(")");
                 } else if (option.isSpaceAroundParenthesis()) {
                     sb.append(" )");
                 } else {
@@ -145,7 +136,6 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
             }
         }
     }
-
 
     // 左側に空白を追加する
     private String addSpaceToLeft(String str) {
