@@ -7,6 +7,8 @@ import com.haryoiro.calcformat.cli.CliOptions;
 import com.haryoiro.calcformat.config.FormatOption;
 import com.haryoiro.calcformat.formatting.CalcFormatter;
 import com.haryoiro.calcformat.cli.CliOptionParser;
+import com.haryoiro.calcformat.utils.LoggerUtils;
+
 import static com.haryoiro.calcformat.utils.IoUtils.pathToFile;
 import static java.lang.System.exit;
 
@@ -28,10 +30,12 @@ public class App {
             formatOption = formatOption.fromPath(opt.getOptionFile());
         }
 
+
         // 指定されたすべてのファイルに対してフォーマットをかける
         if (opt.getInputFiles() != null) {
             for (String file : opt.getInputFiles()) {
-                System.out.println(CalcFormatter.format(pathToFile(file), formatOption));
+                var res = CalcFormatter.format(pathToFile(file), formatOption);
+                System.out.println(res);
             }
         }
 
