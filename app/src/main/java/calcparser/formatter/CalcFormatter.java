@@ -1,59 +1,68 @@
 package calcparser.formatter;
 
-import calcparser.antlr.CalcBaseVisitor;
+import calcparser.antlr.CalcLexer;
 import calcparser.antlr.CalcParser;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import calcparser.config.FormatOption;
+import calcparser.utils.IoUtils;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 
-import java.util.List;
-import java.util.function.Function;
+import java.io.File;
 
-public class CalcFormatter extends CalcBaseVisitor<String> {
+public class CalcFormatter {
 
-    private String joinExpressions(List<? extends ParserRuleContext> expressions,
-            List<? extends TerminalNode> operators,
-            Function<ParserRuleContext, String> visitorMethod) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(visitorMethod.apply(expressions.get(0)));
-        for (int i = 1; i < expressions.size(); i++) {
-            sb.append(" ").append(operators.get(i - 1).getText()).append(" ");
-            sb.append(visitorMethod.apply(expressions.get(i)));
-        }
-        return sb.toString();
+    static FormatOption formatOption = new FormatOption();
+
+    /**
+     * フォーマットオプションを指定してファイルをフォーマットする
+     * @param file
+     * @param opt
+     * @return
+     */
+    public static String format(File file, FormatOption opt) {
+        String target = IoUtils.readFile(file, 1024);
+        return format(target, opt);
     }
 
-    @Override
-    public String visitStart(CalcParser.StartContext ctx) {
-        return visit(ctx.expr()) + "\n";
+    /**
+     * デフォルトのフォーマットオプションでファイルをフォーマットする
+     * @param file
+     * @return
+     */
+    public static String format(File file) {
+        return format(file, formatOption);
     }
 
-    @Override
-    public String visitExpr(CalcParser.ExprContext ctx) {
-        return visit(ctx.add_expr());
+    /**
+     * フォーマットオプションを指定してフォーマットする
+     *
+     * @param target
+     * @param opt
+     * @return
+     */
+    public static String format(String target, FormatOption opt) {
+        var stream = CharStreams.fromString(target);
+        var lexer = new CalcLexer(stream);
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new CalcParser(tokens);
+
+        // パースを行い、ParseTree（構文木）を取得
+        CalcParser.StartContext tree = parser.start();
+
+        // Visitorを作成し、構文木を走査
+        CalcFormatVisitor visitor = new CalcFormatVisitor(opt);
+
+        return visitor.visit(tree);
     }
 
-    @Override
-    public String visitAdd_expr(CalcParser.Add_exprContext ctx) {
-        return "(" + joinExpressions(ctx.mul_expr(), ctx.PLUS_MINUS(), this::visit) + ")";
+    /**
+     * デフォルトのフォーマットオプションで渡された文字列をフォーマットする
+     * @param target
+     * @return
+     */
+    public static String formatFromString(String target) {
+        return format(target, formatOption);
     }
 
-    @Override
-    public String visitMul_expr(CalcParser.Mul_exprContext ctx) {
-        return "(" + joinExpressions(ctx.atom(), ctx.MUL_DIV(), this::visit) + ")";
-    }
 
-
-    @Override
-    public String visitAtom(CalcParser.AtomContext ctx) {
-        if (ctx.NUMBER() != null) {
-            return ctx.NUMBER().getText();
-        }
-        if (ctx.IDENTIFIER() != null) {
-            return ctx.IDENTIFIER().getText();
-        }
-        if (ctx.expr() != null) {
-            return "(" + visit(ctx.expr()) + ")";
-        }
-        throw new RuntimeException("Unknown atom: " + ctx.getText());
-    }
 }
