@@ -20,12 +20,18 @@ repositories {
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
-
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    // This dependency is used by the application.
+    compileOnly("org.jetbrains:annotations:24.0.1")
+
+    // guava
     implementation("com.google.guava:guava:32.1.1-jre")
 
+    // csv, properties, toml, yamlに対応
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.15.2")
+
+    // antlr
     antlr("org.antlr:antlr4:4.13.1")
 }
 
@@ -38,7 +44,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("antlr.twirl.App")
+    mainClass.set("calcparser.App")
 }
 
 tasks.named<Test>("test") {
@@ -48,6 +54,7 @@ tasks.named<Test>("test") {
 
 
 tasks.generateGrammarSource {
+    outputDirectory = file("src/main/java/calcparser/antlr")
     maxHeapSize = "64m"
     arguments = arguments + listOf("-visitor", "-long-messages")
 }
