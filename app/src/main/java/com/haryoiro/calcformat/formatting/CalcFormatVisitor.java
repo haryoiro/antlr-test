@@ -7,61 +7,55 @@ import com.haryoiro.calcformat.config.FormatOption.Option;
 import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.function.Function;
 
-import static com.google.common.base.Ascii.SPACE;
 
 @RequiredArgsConstructor
 public class CalcFormatVisitor extends CalcBaseVisitor<String> {
 
     private final FormatOption option;
+    private final Logger logger = LogManager.getLogger("debug");
 
-    private int level = 0;
+    private int indentLevel = 0;
+
     private String indent() {
-        return "  ".repeat(level);  // 2スペースでインデント
+        if (getOption().isTabToSpace()) {
+            return " ".repeat(indentLevel * getOption().getTabWidth());
+        } else {
+            return "\t".repeat(indentLevel);
+        }
     }
 
-    private String joinExpressions(List<? extends ParserRuleContext> expressions,
+    private String joinExpressions(
+            ParserRuleContext ctx,
+            List<? extends ParserRuleContext> expressions,
             List<? extends TerminalNode> operators,
-            Function<ParserRuleContext, String> visitorMethod, boolean addParentheses) {
+            Function<ParserRuleContext, String> visitorMethod) {
+
         StringBuilder sb = new StringBuilder();
 
-        if (getOption().isAddParenthesis() && addParentheses) {
-            sb.append(spaceAroundParentheses("("));
-            if (getOption().isNewLineAfterParenthesis()) {
-                sb.append("\n");
-            }
-        }
-        if (getOption().isAddParenthesis() && getOption().isNewLineAfterParenthesis()) {
-            sb.append(indent());
+        boolean addParenthesis = option.getOption().isAddParenthesis() && !(ctx instanceof CalcParser.Add_exprContext);
+
+        if (addParenthesis) {
+            applyGlobalFormatOptions(sb, true);
         }
 
         sb.append(visitorMethod.apply(expressions.get(0)));
 
         for (int i = 1; i < expressions.size(); i++) {
-
-            if (getOption().isSpaceAroundOperator()) {
-                sb.append(" ");
-            }
-            sb.append(operators.get(i - 1).getText());
-            if (getOption().isSpaceAroundOperator()) {
-                sb.append(" ");
-            }
-
-            if (getOption().isNewLineAfterParenthesis()) {
-                sb.append("\n").append(indent());
-            }
+            // Option: オペレータの前後に空白を追加する
+            if (getOption().isSpaceAroundOperator()) sb.append(addSpaceToBoth(operators.get(i - 1).getText()));
+            else sb.append(operators.get(i - 1).getText());
 
             sb.append(visitorMethod.apply(expressions.get(i)));
         }
 
-        if (getOption().isAddParenthesis() && addParentheses) {
-            if (getOption().isNewLineAfterParenthesis()) {
-                sb.append("\n").append(indent());
-            }
-            sb.append(spaceAroundParentheses(")"));
+        if (addParenthesis) {
+            applyGlobalFormatOptions(sb, false);
         }
 
         return sb.toString();
@@ -69,9 +63,15 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
 
     @Override
     public String visitStart(CalcParser.StartContext ctx) {
-        String origin = visit(ctx.expr());
+        StringBuilder sb = new StringBuilder();
 
-        return origin + "\n";
+        applyGlobalFormatOptions(sb, true);
+
+        sb.append(visit(ctx.expr()));
+
+        applyGlobalFormatOptions(sb, false);
+
+        return sb.toString();
     }
 
     @Override
@@ -81,13 +81,12 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
 
     @Override
     public String visitAdd_expr(CalcParser.Add_exprContext ctx) {
-        return joinExpressions(ctx.mul_expr(), ctx.PLUS_MINUS(), this::visit,
-                ctx.mul_expr().size() > 1);
+        return joinExpressions(ctx, ctx.mul_expr(), ctx.PLUS_MINUS(), this::visit);
     }
 
     @Override
     public String visitMul_expr(CalcParser.Mul_exprContext ctx) {
-        return joinExpressions(ctx.atom(), ctx.MUL_DIV(), this::visit, ctx.atom().size() > 1);
+        return joinExpressions(ctx, ctx.atom(), ctx.MUL_DIV(), this::visit);
     }
 
     @Override
@@ -101,35 +100,66 @@ public class CalcFormatVisitor extends CalcBaseVisitor<String> {
             sb.append(ctx.IDENTIFIER().getText());
         }
         if (ctx.expr() != null) {
-            var st = visit(ctx.expr());
-            sb.append(st);
+            indentLevel++;
+            String result = "\n" + "(\n" + visit(ctx.expr()) + "\n" + indent() + ")";
+            sb.append(result);
+            indentLevel--;
         }
 
         return sb.toString();
     }
 
+
+    // オプションをえる
     private Option getOption() {
         return option.getOption();
     }
 
-    private String spaceAroundParentheses(String expr) {
-        if (getOption().isSpaceAroundParenthesis()) {
-            StringBuilder sb = new StringBuilder();
+    /**
+     * オプションに従い括弧や改行、スペースを追加する
+     * @param sb
+     * @param isStart
+     */
+    private void applyGlobalFormatOptions(StringBuilder sb, boolean isStart) {
+        Option option = getOption();
 
-            if (expr.startsWith("(")) {
-                sb.append("(");
-                sb.append(" ");
-            } else if (expr.endsWith(")")) {
-                if (!getOption().isNewLineAfterParenthesis()) {
-                    sb.append(" ");
+        if (option.isAddParenthesis()) {
+            if (isStart) {
+                if (option.isNewLineAfterParenthesis()) {
+                    indentLevel++;
+                    sb.append("(\n").append(indent());
+                } else if (option.isSpaceAroundParenthesis()) {
+                    sb.insert(0, "( ");
+                } else {
+                    sb.insert(0, "(");
                 }
-                sb.append(")");
+            } else {
+                if (option.isNewLineAfterParenthesis()) {
+                    indentLevel--;
+                    sb.append("\n" + indent() + ")");
+                } else if (option.isSpaceAroundParenthesis()) {
+                    sb.append(" )");
+                } else {
+                    sb.append(")");
+                }
             }
-
-            return sb.toString();
         }
+    }
 
-        return expr;
+
+    // 左側に空白を追加する
+    private String addSpaceToLeft(String str) {
+        return " " + str;
+    }
+
+    // 右側に空白を追加する
+    private String addSpaceToRight(String str) {
+        return str + " ";
+    }
+
+    // 両側に空白を追加する
+    private String addSpaceToBoth(String str) {
+        return addSpaceToLeft(addSpaceToRight(str));
     }
 
 }
