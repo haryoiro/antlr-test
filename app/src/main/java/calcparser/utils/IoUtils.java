@@ -7,13 +7,41 @@ import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class IoUtils {
 
+    /**
+     * ファイルを読み込む
+     *
+     * @param path
+     * @param bufSize
+     * @return
+     */
+    public static String readFile(Path path, int bufSize) {
+        return readFile(path.toFile(), bufSize);
+    }
+
+    /**
+     * バッファサイズを1024に固定しファイルを読み込む
+     *
+     * @param f
+     * @return
+     */
+    public static String readFile(File f) {
+        return readFile(f, 1024);
+    }
+
+    /**
+     * ファイルを読み込む
+     *
+     * @param f
+     * @param bufSize
+     * @return
+     */
     public static String readFile(File f, int bufSize) {
-        System.out.println(f.toURI());
         try (ReadableByteChannel rbc = FileChannel.open(Paths.get(f.toURI()),
                 StandardOpenOption.READ)) {
             ByteBuffer bb = ByteBuffer.allocate(bufSize);
@@ -29,6 +57,16 @@ public class IoUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * パスをファイルに変換する
+     *
+     * @param path
+     * @return
+     */
+    public static File pathToFile(String path) {
+        return Paths.get(path).toFile();
     }
 
 }
