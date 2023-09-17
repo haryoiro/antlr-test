@@ -26,6 +26,7 @@ configurations {
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testImplementation("org.assertj:assertj-core:3.24.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     compileOnly("org.jetbrains:annotations:24.0.1")
