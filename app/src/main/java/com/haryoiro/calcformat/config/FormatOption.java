@@ -13,10 +13,21 @@ public class FormatOption {
 
     @Data
     public static class Option {
-        private boolean addParenthesis = false;
+
+        // タブをスペースにするか
+        private boolean tabToSpace = true;
+        // tabの幅
+        private int tabWidth = 2;
+
+        // 括弧をつけるかどうか
+        private boolean addParenthesis = true;
+        // 括弧の前後にスペースを入れるかどうか
         private boolean spaceAroundParenthesis = true;
-        private boolean newLineAfterParenthesis = false;
-        private boolean spaceAroundOperator = false;
+        // 括弧の後に改行を入れるかどうか
+        private boolean newLineAfterParenthesis = true;
+
+        // 演算子の前後にスペースを入れるかどうか
+        private boolean spaceAroundOperator = true;
     }
 
     // Fileより読み込む
