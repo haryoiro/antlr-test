@@ -46,6 +46,13 @@ dependencies {
 
     // antlr
     antlr("org.antlr:antlr4:4.13.1")
+
+    // logging
+    implementation("org.apache.logging.log4j:log4j-api:2.20.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.20.0")
+
+
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
