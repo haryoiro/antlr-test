@@ -1,25 +1,22 @@
 package calcparser.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import java.io.File;
 
+@Data
 public class FormatOption {
 
-    // 括弧をつけるかどうか
-    private boolean addParenthesis = false;
+    private Option option;
 
-    // 括弧の前後にスペースを入れるかどうか
-    // addParenthesisがfalseの場合は無視される
-    private boolean spaceAroundParenthesis = true;
-
-    // 括弧の後に改行を入れるかどうか
-    // addParenthesisがfalseの場合は無視される
-    private boolean newLineAfterParenthesis = false;
-
-    // 演算子の前後にスペースを入れるかどうか
-    private boolean spaceAroundOperator = false;
-
+    @Data
+    public static class Option {
+        private boolean addParenthesis = false;
+        private boolean spaceAroundParenthesis = true;
+        private boolean newLineAfterParenthesis = false;
+        private boolean spaceAroundOperator = false;
+    }
 
     // Fileより読み込む
     @JsonIgnore
@@ -33,3 +30,4 @@ public class FormatOption {
         return new TomlFormatOptionReader().fromFile(new File(path));
     }
 }
+
