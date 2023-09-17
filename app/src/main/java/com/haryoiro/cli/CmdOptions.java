@@ -1,4 +1,4 @@
-package calcparser.optoins;
+package com.haryoiro.cli;
 
 import lombok.Getter;
 import org.apache.commons.cli.CommandLine;
@@ -9,8 +9,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
 import java.util.List;
-
-import calcparser.optoins.*;
 
 public class CmdOptions {
 

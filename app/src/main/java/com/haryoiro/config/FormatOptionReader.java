@@ -1,4 +1,4 @@
-package calcparser.config;
+package com.haryoiro.config;
 
 import java.io.File;
 

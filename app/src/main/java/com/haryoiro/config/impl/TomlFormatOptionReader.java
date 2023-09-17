@@ -1,6 +1,8 @@
-package calcparser.config;
+package com.haryoiro.config.impl;
 
-import calcparser.utils.IoUtils;
+import com.haryoiro.config.FormatOption;
+import com.haryoiro.config.FormatOptionReader;
+import com.haryoiro.utils.IoUtils;
 import com.fasterxml.jackson.dataformat.toml.TomlMapper;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.NotNull;

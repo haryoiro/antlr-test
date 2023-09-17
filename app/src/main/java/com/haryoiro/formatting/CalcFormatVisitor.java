@@ -1,8 +1,8 @@
-package calcparser.formatter;
+package com.haryoiro.formatting;
 
-import calcparser.antlr.CalcBaseVisitor;
-import calcparser.antlr.CalcParser;
-import calcparser.config.FormatOption;
+import com.haryoiro.antlr.CalcBaseVisitor;
+import com.haryoiro.antlr.CalcParser;
+import com.haryoiro.config.FormatOption;
 import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;

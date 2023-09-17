@@ -1,4 +1,4 @@
-package calcparser.utils;
+package com.haryoiro.utils;
 
 import java.io.File;
 import java.io.IOException;

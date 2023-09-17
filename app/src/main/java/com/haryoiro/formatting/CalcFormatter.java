@@ -1,9 +1,9 @@
-package calcparser.formatter;
+package com.haryoiro.formatting;
 
-import calcparser.antlr.CalcLexer;
-import calcparser.antlr.CalcParser;
-import calcparser.config.FormatOption;
-import calcparser.utils.IoUtils;
+import com.haryoiro.antlr.CalcLexer;
+import com.haryoiro.antlr.CalcParser;
+import com.haryoiro.config.FormatOption;
+import com.haryoiro.utils.IoUtils;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
