@@ -4,7 +4,7 @@
 package antlr.twirl;
 
 import org.junit.jupiter.api.Test;
-import com.haryoiro.app.App;
+import com.haryoiro.calcformat.app.App;
 
 class AppTest {
     @Test void appHasAGreeting() {

@@ -1,6 +1,6 @@
 package config;
 
-import com.haryoiro.config.FormatOption;
+import com.haryoiro.calcformat.config.FormatOption;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
