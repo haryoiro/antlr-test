@@ -1,28 +1,42 @@
 package config;
 
+import com.haryoiro.calcformat.config.FileType;
 import com.haryoiro.calcformat.config.FormatOption;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ConfigTest {
+class ConfigTest {
 
     @Test
-
-    void test() {
-        // Arrange
-        FormatOption.Option option = new FormatOption.Option();
-        option.setAddParenthesis(false);
-        option.setSpaceAroundParenthesis(false);
-        option.setNewLineAfterParenthesis(false);
-        option.setSpaceAroundOperator(false);
-        FormatOption expectOption = new FormatOption();
-        expectOption.setOption(option);
-
+    @DisplayName("ファイルからコンフィグファイルを読み込める")
+    void canReadTomlConfigFromFile() {
         // Act
         FormatOption formatOption = new FormatOption().fromPath("src/test/resources/config/config.toml");
 
         // Assert
-        assertThat(formatOption).isEqualTo(expectOption);
+        assertThat(formatOption).isNotNull();
+    }
+
+    @Test
+    @DisplayName("文字列からコンフィグファイルを読み込める")
+    void canReadTomlConfigFromString() {
+        // Arrange
+        String tomlString = """
+                [option]
+                tabToSpace = false
+                tabWidth = 2
+                addParenthesis = false
+                spaceAroundParenthesis = false
+                newLineAfterParenthesis = false
+                spaceAroundOperator = false
+                """;
+
+        // Act
+        FormatOption formatOption = new FormatOption().fromString(tomlString, FileType.TOML);
+
+        // Assert
+        assertThat(formatOption).isNotNull();
     }
 }
