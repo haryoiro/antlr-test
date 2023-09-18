@@ -25,6 +25,9 @@ configurations {
 }
 
 dependencies {
+    implementation("org.projectlombok:lombok:1.18.28")
+    annotationProcessor("org.projectlombok:lombok:1.18.28")
+
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
     testImplementation("org.assertj:assertj-core:3.24.2")
@@ -71,7 +74,6 @@ jlink {
             "--strip-debug", "--compress", "2",
             "--no-header-files",
             "--no-man-pages",
-
             )
     launcher {
         name = "calcformat"
