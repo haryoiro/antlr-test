@@ -6,5 +6,7 @@ module com.haryoiro.calcformat {
     requires com.fasterxml.jackson.dataformat.toml;
 
     requires info.picocli;
+    opens com.haryoiro.calcformat.app to info.picocli;
+
     exports com.haryoiro.calcformat.app;
 }
