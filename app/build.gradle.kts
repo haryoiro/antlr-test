@@ -46,7 +46,8 @@ dependencies {
     antlr("org.antlr:antlr4:4.13.1")
 
     // tinylog
-    implementation("org.tinylog:jcl-tinylog:2.4.0-M2")
+    implementation("org.tinylog:tinylog-api:2.6.0")
+    runtimeOnly("org.tinylog:tinylog-impl:2.6.2")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

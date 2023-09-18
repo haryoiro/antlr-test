@@ -5,6 +5,8 @@ module com.haryoiro.calcformat {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.dataformat.toml;
 
+    requires org.tinylog.api;
+
     requires info.picocli;
     opens com.haryoiro.calcformat.app to info.picocli;
 
