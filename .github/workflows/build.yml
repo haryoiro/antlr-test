@@ -10,7 +10,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os:
+          - ubuntu-latest
+          - macos-latest
         java: ['17']
 
     steps:
@@ -27,10 +29,13 @@ jobs:
         run: ./gradlew :app:build
 
       - name: Build custom JRE using jlink
-        run: ./gradlew :app:jlink
+        run: ./gradlew :app:jlinkc
+
+      - name: Package for linux and MacOS
+        run: tar -zcvf calcfmt-${{ matrix.os }}.tar.gz app/build/image
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: image-${{ matrix.os }}
-          path: app/build/image/
+          name: calcfmt-${{ matrix.os }}
+          path: calcfmt-${{ matrix.os }}.tar.gz
