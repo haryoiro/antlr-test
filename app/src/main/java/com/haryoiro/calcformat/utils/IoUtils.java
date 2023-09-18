@@ -69,4 +69,8 @@ public class IoUtils {
         return Paths.get(path).toFile();
     }
 
+    public static String getExtension(String path) {
+        return Paths.get(path).getFileName().toString().split("\\.")[1];
+    }
+
 }
