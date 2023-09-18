@@ -1,4 +1,9 @@
 [option]
+# インデントにスペースを使う
+tabToSpace = false
+# タブの幅
+tabWidth = 2
+
 # 括弧をつけるかどうか
 addParenthesis = false
 
