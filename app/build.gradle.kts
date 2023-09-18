@@ -45,9 +45,8 @@ dependencies {
     // antlr
     antlr("org.antlr:antlr4:4.13.1")
 
-    // logging
-    implementation("org.apache.logging.log4j:log4j-api:2.20.0")
-    implementation("org.apache.logging.log4j:log4j-core:2.20.0")
+    // tinylog
+    implementation("org.tinylog:jcl-tinylog:2.4.0-M2")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -55,7 +54,6 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
-    modularity.inferModulePath = true
 }
 
 application {
@@ -78,7 +76,10 @@ jlink {
         name = "calcfmt"
     }
 
-    forceMerge("jackson", "log4j", "lombok")
+    mergedModule {
+        additive = true
+    }
+
     forceMerge("jlink","jackson")
 }
 
