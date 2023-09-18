@@ -1,0 +1,36 @@
+name: Build Java Runtime Image with jlink
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        java: ['17']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+
+      - name: Build with Gradle
+        run: ./gradlew :app:build
+
+      - name: Build custom JRE using jlink
+        run: ./gradlew :app:jlink
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: image-${{ matrix.os }}
+          path: app/build/image/
