@@ -5,7 +5,6 @@ module com.haryoiro.calcformat {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.dataformat.toml;
 
-    requires org.apache.logging.log4j;
     requires info.picocli;
     exports com.haryoiro.calcformat.app;
 }

@@ -6,8 +6,6 @@ import com.haryoiro.calcformat.config.FormatOption;
 import com.haryoiro.calcformat.config.FormatOption.Option;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.function.Function;
@@ -15,7 +13,6 @@ import java.util.function.Function;
 public class CalcFormatVisitor extends CalcBaseVisitor<String> {
 
     private final FormatOption option;
-    private final Logger logger = LogManager.getLogger("debug");
 
     private int indentLevel = 0;
 

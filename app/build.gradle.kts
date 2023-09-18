@@ -79,6 +79,7 @@ jlink {
     }
 
     forceMerge("jackson", "log4j", "lombok")
+    forceMerge("jlink","jackson")
 }
 
 
