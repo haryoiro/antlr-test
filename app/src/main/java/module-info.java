@@ -7,6 +7,5 @@ module com.haryoiro.calcformat {
 
     requires org.apache.logging.log4j;
     requires info.picocli;
-    requires lombok;
     exports com.haryoiro.calcformat.app;
 }

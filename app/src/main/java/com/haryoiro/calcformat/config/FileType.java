@@ -1,9 +1,5 @@
 package com.haryoiro.calcformat.config;
 
-import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-
 public enum FileType {
     TOML("toml"),
 

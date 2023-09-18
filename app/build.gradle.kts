@@ -25,8 +25,6 @@ configurations {
 }
 
 dependencies {
-    implementation("org.projectlombok:lombok:1.18.28")
-    annotationProcessor("org.projectlombok:lombok:1.18.28")
 
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
@@ -57,6 +55,7 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
+    modularity.inferModulePath = true
 }
 
 application {
@@ -69,24 +68,25 @@ tasks.named<Test>("test") {
 }
 
 jlink {
-
     options = listOf(
             "--strip-debug", "--compress", "2",
             "--no-header-files",
             "--no-man-pages",
-            )
+    )
+
     launcher {
-        name = "calcformat"
+        name = "calcfmt"
     }
 
     forceMerge("jackson", "log4j", "lombok")
 }
 
-tasks {
 
+tasks {
     generateGrammarSource {
         outputDirectory = file("src/main/java/com/haryoiro/calcformat/antlr")
         maxHeapSize = "64m"
         arguments = arguments + listOf("-visitor", "-long-messages")
     }
+
 }
