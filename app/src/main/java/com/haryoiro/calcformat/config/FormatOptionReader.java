@@ -6,5 +6,4 @@ public interface FormatOptionReader {
     FormatOption fromFile(File file);
 
     FormatOption fromString(String string);
-
 }
