@@ -1,4 +1,4 @@
-# calcFormatterAntlrSample
+# calcFormatterAntlr4Sample
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -28,20 +28,19 @@ gradle :app:buildDependents
 
 ## プロジェクト構成
 
-| パス                                 | 説明                                 |
-|:-----------------------------------|:-----------------------------------|
-| main/antlr/Calc.g4                 | ANTLR4用の文法ファイル                     |
-| main/java/com/haryoiro/calcformat/ | メインのJavaパッケージ                      |
-| .../antlr/                         | ANTLRによって生成される各種Javaファイルが格納されています。 |
-| .../app/App.java                   | アプリケーションのエントリーポイント                 |
-| .../config/                        | フォーマットに関する設定に関するJavaファイルがあります      |
-| .../formatting/                    | フォーマット関連のJavaファイルがあります。            |
-| .../utils/IoUtils.java             | 入出力関連のユーティリティがあります。                |
-| main/resources/log4j2.xml          | ロギング設定のXMLファイルです。                  |
-| test/java/                         | ユニットテスト関連のJavaファイルがあります。           |
-| test/resources/                    | テストで使用するリソースが格納されています。             |
+| パス                                 | 説明                       |
+|:-----------------------------------|:-------------------------|
+| main/antlr/Calc.g4                 | ANTLR4用の文法ファイル           |
+| main/java/com/haryoiro/calcformat/ | メインのJavaパッケージ            |
+| .../antlr/                         | ANTLR4によって生成されるJavaファイル群 |
+| .../app/App.java                   | アプリケーションのエントリーポイント       |
+| .../config/                        | フォーマッタの設定                |
+| .../formatting/                    | フォーマッタ本体                 |
+| main/resources/log4j2.xml          | ロギング設定のXMLファイルです。        |
+| test/java/                         | ユニットテスト関連                |
+| test/resources/                    | テストで使用するリソース             |
 
 
-## ライセンス
+## License
 
 このプロジェクトはApache License 2.0に基づいています。
