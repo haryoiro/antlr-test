@@ -36,7 +36,7 @@ gradle :app:buildDependents
 | .../app/App.java                   | アプリケーションのエントリーポイント       |
 | .../config/                        | フォーマッタの設定                |
 | .../formatting/                    | フォーマッタ本体                 |
-| main/resources/log4j2.xml          | ロギング設定のXMLファイルです。        |
+| main/resources/tinylog.properties  | ロギング設定        |
 | test/java/                         | ユニットテスト関連                |
 | test/resources/                    | テストで使用するリソース             |
 
